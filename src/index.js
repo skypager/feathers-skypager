@@ -13,7 +13,7 @@ class Service {
   constructor(options) {
     this.paginate = options.paginate || {};
     this.project = options.project;
-    this.Model = this.project.get(`content.${options.Model}`)
+    this.Model = options.Model
     this.scope = options.scope || {}
     this.id = options.id || 'id';
   }
@@ -24,7 +24,7 @@ class Service {
 
   find(params = {}) {
     return Promise.resolve(
-      this.Model.query({
+      this.project.query(this.Model, {
         ...params,
         ...this.scope,
       })
@@ -33,12 +33,21 @@ class Service {
     .catch(errorHandler)
   }
 
+  get findById() {
+    return this.project.content[this.Model]
+      ? this.getInstanceAt.bind(this)
+      : (id) => this.find({id})
+  }
+
   get(id) {
-    return this.getInstanceAt(id)
+    return this.findById(id)
       .then(result => result.toJSON())
       .catch(errorHandler)
   }
 
+  queryById (id) {
+    return this.find
+  }
   getInstanceAt(id, strict = true) {
     return this.get(id)
     .then((instance) => {

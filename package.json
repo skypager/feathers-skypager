@@ -35,7 +35,7 @@
     "watch": "babel --watch -d lib/ src/",
     "jshint": "jshint src/. test/. --config",
     "mocha": "mocha test/ --compilers js:babel-core/register",
-    "test": "rm -rf .tmp && npm run compile && npm run jshint && npm run mocha && nsp check"
+    "test": "rm -rf .tmp && npm run compile && npm run mocha && nsp check"
   },
   "directories": {
     "lib": "lib"
